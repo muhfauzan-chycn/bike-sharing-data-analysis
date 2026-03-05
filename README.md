@@ -1,21 +1,31 @@
-# Bike Sharing Data Analysis
+# Bike Sharing Data Analysis 🚲
 
-Project ini merupakan analisis dataset Bike Sharing untuk memahami faktor yang mempengaruhi jumlah penyewaan sepeda.
-
-## Dashboard
+Project ini merupakan analisis dataset Bike Sharing untuk mengetahui faktor-faktor yang mempengaruhi jumlah penyewaan sepeda. Analisis dilakukan menggunakan Python dengan tahapan data wrangling, exploratory data analysis (EDA), dan visualisasi data. Hasil analisis kemudian ditampilkan dalam bentuk dashboard interaktif menggunakan Streamlit.
 
 ## Dashboard
 
 Dashboard dapat diakses melalui link berikut:
 
-https://bike-sharing-data-analysis-muhfauzan-chycn.streamlit.app/
+https://bike-sharing-data-analysis-muhfauzan-chycn.streamlit.app
 
-## Menjalankan Dashboard secara Lokal
+## Setup Environment - Anaconda
 
-Install dependencies:
-
+```
+conda create --name bike-sharing python=3.9
+conda activate bike-sharing
 pip install -r requirements.txt
+```
 
-Run dashboard:
+## Setup Environment - Shell/Terminal
 
+```
+mkdir bike-sharing-data-analysis
+cd bike-sharing-data-analysis
+pip install -r requirements.txt
+```
+
+## Run Streamlit App
+
+```
 streamlit run dashboard/dashboard.py
+```
