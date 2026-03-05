@@ -4,8 +4,6 @@ Project ini merupakan analisis dataset Bike Sharing untuk memahami faktor yang m
 
 ## Dashboard
 
-## Dashboard
-
 Dashboard dapat diakses melalui link berikut:
 
 https://bike-sharing-data-analysis-muhfauzan-chycn.streamlit.app/
