@@ -5,21 +5,27 @@ import matplotlib.pyplot as plt
 
 st.title("Bike Sharing Data Dashboard")
 
-# Load data
-df = pd.read_csv("dashboard/main_data.csv")
+# =========================
+# Load Data
+# =========================
 
+day_df = pd.read_csv("dashboard/main_data.csv")
+hour_df = pd.read_csv("data/hour.csv")
 
-# Filter Season ----
+# =========================
+# Filter Season
+# =========================
 
 season_option = st.selectbox(
     "Select Season",
-    df["season"].unique()
+    day_df["season"].unique()
 )
 
-filtered_df = df[df["season"] == season_option]
+filtered_df = day_df[day_df["season"] == season_option]
 
-
+# =========================
 # 1. Weather vs Bike Rental
+# =========================
 
 st.subheader("Average Bike Rentals by Weather Condition")
 
@@ -39,40 +45,52 @@ ax.set_ylabel("Average Bike Rentals")
 
 st.pyplot(fig)
 
-
+# =========================
 # 2. Peak Hour Rental
+# =========================
 
-st.subheader("Average Bike Rentals by Hour")
+st.subheader("Average Bike Rentals by Hour (Working Day vs Holiday)")
 
-hour_data = df.groupby("hr")["cnt"].mean().reset_index()
+hour_data = hour_df.groupby(["workingday","hr"])["cnt"].mean().reset_index()
 
-fig, ax = plt.subplots()
+# Label lebih jelas
+hour_data["workingday"] = hour_data["workingday"].map({
+    0: "Holiday",
+    1: "Working Day"
+})
+
+fig, ax = plt.subplots(figsize=(10,5))
 
 sns.lineplot(
     data=hour_data,
     x="hr",
     y="cnt",
+    hue="workingday",
     marker="o",
     ax=ax
 )
 
 ax.set_xlabel("Hour of the Day")
 ax.set_ylabel("Average Bike Rentals")
+ax.set_xticks(range(0,24))
 
 st.pyplot(fig)
 
-
+# =========================
 # 3. Casual vs Registered
+# =========================
 
 st.subheader("Total Rentals by User Type")
 
-user_data = df[["casual","registered"]].sum()
+user_data = day_df[["casual","registered"]].sum().reset_index()
+user_data.columns = ["User Type","Total Rentals"]
 
 fig, ax = plt.subplots()
 
 sns.barplot(
-    x=user_data.index,
-    y=user_data.values,
+    data=user_data,
+    x="User Type",
+    y="Total Rentals",
     ax=ax
 )
 
