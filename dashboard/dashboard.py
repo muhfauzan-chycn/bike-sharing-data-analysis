@@ -13,6 +13,27 @@ day_df = pd.read_csv("dashboard/main_data.csv")
 hour_df = pd.read_csv("data/hour.csv")
 
 # =========================
+# Label Mapping
+# =========================
+
+season_map = {
+    1: "Spring",
+    2: "Summer",
+    3: "Fall",
+    4: "Winter"
+}
+
+weather_map = {
+    1: "Clear",
+    2: "Mist",
+    3: "Light Rain/Snow",
+    4: "Heavy Rain/Snow"
+}
+
+day_df["season"] = day_df["season"].map(season_map)
+day_df["weathersit"] = day_df["weathersit"].map(weather_map)
+
+# =========================
 # Filter Season
 # =========================
 
@@ -29,7 +50,11 @@ filtered_df = day_df[day_df["season"] == season_option]
 
 st.subheader("Average Bike Rentals by Weather Condition")
 
-weather_data = filtered_df.groupby("weathersit")["cnt"].mean().reset_index()
+weather_data = (
+    filtered_df.groupby("weathersit")["cnt"]
+    .mean()
+    .reset_index()
+)
 
 fig, ax = plt.subplots()
 
@@ -37,6 +62,7 @@ sns.barplot(
     data=weather_data,
     x="weathersit",
     y="cnt",
+    palette="viridis",
     ax=ax
 )
 
@@ -51,13 +77,19 @@ st.pyplot(fig)
 
 st.subheader("Average Bike Rentals by Hour (Working Day vs Holiday)")
 
-hour_data = hour_df.groupby(["workingday","hr"])["cnt"].mean().reset_index()
+hour_data = (
+    hour_df.groupby(["workingday","hr"])["cnt"]
+    .mean()
+    .reset_index()
+)
 
-# Label lebih jelas
+# Label workingday agar jelas
 hour_data["workingday"] = hour_data["workingday"].map({
-    0: "Holiday",
+    0: "Holiday / Weekend",
     1: "Working Day"
 })
+
+hour_data = hour_data.sort_values("hr")
 
 fig, ax = plt.subplots(figsize=(10,5))
 
@@ -73,6 +105,7 @@ sns.lineplot(
 ax.set_xlabel("Hour of the Day")
 ax.set_ylabel("Average Bike Rentals")
 ax.set_xticks(range(0,24))
+ax.legend(title="Day Type")
 
 st.pyplot(fig)
 
@@ -82,7 +115,12 @@ st.pyplot(fig)
 
 st.subheader("Total Rentals by User Type")
 
-user_data = day_df[["casual","registered"]].sum().reset_index()
+user_data = (
+    day_df[["casual","registered"]]
+    .sum()
+    .reset_index()
+)
+
 user_data.columns = ["User Type","Total Rentals"]
 
 fig, ax = plt.subplots()
@@ -91,6 +129,7 @@ sns.barplot(
     data=user_data,
     x="User Type",
     y="Total Rentals",
+    palette="Set2",
     ax=ax
 )
 
