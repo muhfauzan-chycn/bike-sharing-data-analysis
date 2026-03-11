@@ -9,7 +9,7 @@ st.title("Bike Sharing Data Dashboard")
 df = pd.read_csv("dashboard/main_data.csv")
 
 
-# Filter Season
+# Filter Season ----
 
 season_option = st.selectbox(
     "Select Season",
