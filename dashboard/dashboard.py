@@ -75,33 +75,28 @@ st.pyplot(fig)
 # 2. Peak Hour Rental
 # =========================
 
-st.subheader("Average Bike Rentals by Hour (Working Day vs Holiday)")
+st.subheader("Average Bike Rentals by Hour")
 
-hour_data = (
-    hour_df.groupby(["workingday","hr"])["cnt"]
-    .mean()
-    .reset_index()
-)
+# membuat salinan dataframe agar tidak mengubah data asli
+hour_plot_df = hour_df.copy()
 
-# Label workingday agar jelas
-hour_data["workingday"] = hour_data["workingday"].map({
+# ubah label workingday
+hour_plot_df["workingday"] = hour_plot_df["workingday"].map({
     0: "Holiday / Weekend",
     1: "Working Day"
 })
 
-hour_data = hour_data.sort_values("hr")
-
 fig, ax = plt.subplots(figsize=(10,5))
 
 sns.lineplot(
-    data=hour_data,
+    data=hour_plot_df,
     x="hr",
     y="cnt",
     hue="workingday",
-    marker="o",
     ax=ax
 )
 
+ax.set_title("Average Bike Rentals by Hour")
 ax.set_xlabel("Hour of the Day")
 ax.set_ylabel("Average Bike Rentals")
 ax.set_xticks(range(0,24))
