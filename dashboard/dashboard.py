@@ -16,9 +16,6 @@ season_option = st.selectbox(
 
 filtered_df = df[df["season"] == season_option]
 
-st.subheader("Dataset Preview")
-st.dataframe(df.head())
-
 # Weather vs Bike Rental
 st.subheader("Average Bike Rentals by Weather")
 
